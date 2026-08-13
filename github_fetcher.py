@@ -1,8 +1,12 @@
 import httpx
 import json
+import os
+from dotenv import load_dotenv
 
 profiles = []
 
+load_dotenv()
+token = os.getenv("GITHUB_TOKEN")
 while True:
     username = input("Enter GitHub username (or type 'exit' to quit): ")
     
@@ -10,7 +14,7 @@ while True:
         break
         
     try:
-        response = httpx.get(f"https://api.github.com/users/{username}")
+        response = httpx.get(f"https://api.github.com/users/{username}", headers={"Authorization": f"Bearer {token}"})
         
         if response.status_code == 404:
             print("User not found.")
